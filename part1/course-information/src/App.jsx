@@ -1,4 +1,5 @@
 function Header(p) {
+    console.log(p)
     return <h1>{p.course}</h1>
 }
 
@@ -13,36 +14,38 @@ function Part(p) {
 function Content(p) {
   return (
     <>
-      <Part part={p.part1.name} exercises={p.part1.exercises} />
-      <Part part={p.part2.name} exercises={p.part2.exercises} />
-      <Part part={p.part3.name} exercises={p.part3.exercises} />
-      <Total value1={p.part1.exercises} value2={p.part2.exercises} value3={p.part3.exercises} />
+      {p.arr.map(e => (
+        <Part part={e.name} exercises={e.exercises}/>
+      ))}
+      <Total value1={p.arr[0].exercises} value2={p.arr[1].exercises} value3={p.arr[2].exercises} />
     </>
   )
 }
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const parts = [
-    {
-      name: 'Fundamentals of React',
-      exercises: 10
-    },
-    {
-      name: 'Using props to pass data',
-      exercises: 7
-    },
-    {
-      name: 'State of a component',
-      exercises: 14
-    }
-  ]
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
 
   return (
-    <>
-      <Header course={course} />
-      <Content part1={parts[0]} part2={parts[1]} part3={parts[2]} />
-    </>
+    <div>
+      <Header course={course.name}/>
+      <Content arr={course.parts} />
+    </div>
   )
 }
 export default App
