@@ -11,7 +11,7 @@ const App = () => {
     const personObject = {
       name: newName,
     }
-    setPersons(persons.concat(personObject))
+    persons.find(person => person.name === newName) ? alert(`${newName} is already in the phonebook!`) : setPersons(persons.concat(personObject))
     setNewName('')
   }
 
