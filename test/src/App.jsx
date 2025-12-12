@@ -1,38 +1,14 @@
-import { useState } from 'react'
+import Note from './components/Note'
 
-const History = (props) => {
-  if (props.allClicks.length === 0) {
-    return (
-      <div>
-        the app is used by pressing the buttons
-      </div>
-    )
-  }
+const App = ({ notes }) => {
   return (
     <div>
-      button press history: {props.allClicks.join(' ')}
-    </div>
-  )
-}
-
-const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
-
-const App = () => {
-  const [value, setValue] = useState(10)
-  
-
-  const setToValue = (newValue) => () => {
-    console.log('value now', newValue)  // print the new value to console
-    setValue(newValue)
-  }
-  
-  return (
-    <div>
-      {value}
-
-      <button onClick={setToValue(value + 1000)}>thousand</button>
-      <button onClick={setToValue(0)}>reset</button>
-      <button onClick={setToValue(value + 1)}>increment</button>
+      <h1>Notes</h1>
+      <ul>
+        {notes.map((note) => (
+          <Note key={note.id} note={note} />
+        ))}
+      </ul>
     </div>
   )
 }
