@@ -1,23 +1,33 @@
 import { useState } from 'react'
+import './main.css'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' },
+    { name: 'Arto Hellas', number: '0000' },
   ]) 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
       name: newName,
+      number: newNumber
     }
     persons.find(person => person.name === newName) ? alert(`${newName} is already in the phonebook!`) : setPersons(persons.concat(personObject))
     setNewName('')
+    setNewNumber('')
   }
 
   const handlePersonChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
+    
+  }
+
+  const handleNumberChange = (event) => {
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
   }
 
   return (
@@ -28,6 +38,14 @@ const App = () => {
           name: <input 
             value={newName}
             onChange={handlePersonChange}
+            type="text"
+          />
+          <br/>
+          <br/>
+          number: <input 
+            value={newNumber}
+            onChange={handleNumberChange}
+            type="text"
           />
         </div>
         <div>
@@ -35,11 +53,16 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <ul>
-        {persons.map(person => 
-          <li key={person.name}>{person.name}</li>
-        )}
-      </ul>
+      <table>
+        <tbody>
+          {persons.map(person => 
+            <tr key={person.name}>
+              <td>{person.name}</td>
+              <td>{person.number}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   )
 }
