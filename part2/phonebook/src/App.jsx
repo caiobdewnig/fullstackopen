@@ -16,17 +16,24 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1 // Adicionado id para evitar o aviso do React caso o nome se repita, mesmo que o alert impeça
+      id: String(persons.length + 1)
     }
     
     if (persons.find(person => person.name === newName || person.number === newNumber)) {
       alert(`${newName} or ${newNumber} is already in the phonebook!`)
     } else {
       setPersons(persons.concat(personObject))
+      axios
+        .post("http://localhost:3001/persons", personObject)
+        .then(response => {
+          console.log(response.data)
+          setPersons(persons.concat(personObject))
+        })
+      setNewName('')
+      setNewNumber('')
     }
 
-    setNewName('')
-    setNewNumber('')
+
   }
 
   const handleSearchChange = (event) => {
