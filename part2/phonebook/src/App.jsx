@@ -30,6 +30,20 @@ const App = () => {
     }
   }
 
+  const deletePersonOf = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      httpService
+        .deletePerson(id)
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+        .catch(error => {
+          alert(`The person '${name}' was already deleted from server, error: ${error}`)
+          setPersons(persons.filter(p => p.id !== id))
+        })
+    }
+  }
+
   const handleSearchChange = (event) => {
     setSearchName(event.target.value)
   }
@@ -72,7 +86,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} deletePerson={deletePersonOf}/>
     </div>
   )
 }
