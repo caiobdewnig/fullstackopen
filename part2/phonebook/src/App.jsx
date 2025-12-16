@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import './main.css'
+import httpService from './services/httpmodule.js'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -22,18 +22,12 @@ const App = () => {
     if (persons.find(person => person.name === newName || person.number === newNumber)) {
       alert(`${newName} or ${newNumber} is already in the phonebook!`)
     } else {
-      setPersons(persons.concat(personObject))
-      axios
-        .post("http://localhost:3001/persons", personObject)
-        .then(response => {
-          console.log(response.data)
-          setPersons(persons.concat(personObject))
-        })
-      setNewName('')
-      setNewNumber('')
+      httpService.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
     }
-
-
   }
 
   const handleSearchChange = (event) => {
@@ -54,12 +48,9 @@ const App = () => {
 
   useEffect(() => {
   console.log('effect')
-  axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      console.log('promise fulfilled')
-      setPersons(response.data)
-    })
+  httpService
+    .getAll()
+    .then(initialPerson => {setPersons(initialPerson)})
   }, [])
   console.log('render', persons.length, 'persons')
 
