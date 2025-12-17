@@ -4,12 +4,14 @@ import httpService from './services/httpmodule.js'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Note from './components/Note.jsx'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
+  const [errorNote, setErrorNote] = useState('asdasd')
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -17,17 +19,24 @@ const App = () => {
 
     if (existingPerson) {
       updatePersonOf(existingPerson.id, existingPerson.name);
+      setErrorNote(`${newName} number altered!!!`)
     } else {
       const personObject = {
         name: newName,
         number: newNumber,
       };
 
-      httpService.create(personObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName('');
-        setNewNumber('');
-      });
+      httpService
+        .create(personObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName('');
+          setNewNumber('');
+          setErrorNote(`${newName} created!!!`)
+        })
+        .catch(() => {
+          setErrorNote(`Error: couldn't add ${newName}`)
+        })
     }
   };
 
@@ -37,9 +46,10 @@ const App = () => {
         .deletePerson(id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== id))
+          setErrorNote(`${name} deleted.`)
         })
-        .catch(error => {
-          alert(`The person '${name}' was already deleted from server, error: ${error.message}`)
+        .catch(() => {
+          setErrorNote(`Error: the person '${name}' was already deleted from server.`)
           setPersons(persons.filter(p => p.id !== id))
         })
     }
@@ -55,9 +65,10 @@ const App = () => {
         setPersons(persons.map(p => p.id !== id ? p : returnedPerson));
         setNewName('');
         setNewNumber('');
+        setErrorNote(`${name}'s number updated!`)
       })
-      .catch(error => {
-        alert(`Error: ${name} was probably already deleted from the server (${error.message})`);
+      .catch(() => {
+        setErrorNote(`Error: ${name} was probably already deleted from the server`);
         setPersons(persons.filter(p => p.id !== id));
       });
   }
@@ -89,13 +100,14 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1 className="title">Phonebook</h1>
+      <Note message={errorNote} className={errorNote.toLowerCase().includes("error") ? 'error' : 'good'}/>
       <Filter 
         searchName={searchName} 
         handleSearchChange={handleSearchChange} 
       />
 
-      <h3>Add a new person</h3>
+      <h3 className="subtitle">Add a new person</h3>
       <PersonForm
         addPerson={addPerson}
         newName={newName}
@@ -105,8 +117,8 @@ const App = () => {
         handleUpdatePerson={updatePersonOf}
       />
 
-      <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} deletePerson={deletePersonOf}/>
+      <h2 className="title">Numbers</h2>
+      <Persons personsToShow={personsToShow} deletePerson={deletePersonOf} className="persons"/>
     </div>
   )
 }

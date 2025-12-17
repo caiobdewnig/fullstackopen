@@ -8,7 +8,7 @@
     {
       "id": "2",
       "content": "Browser can execute only JavaScript",
-      "important": false
+      "important": true
     },
     {
       "id": "3",
@@ -18,17 +18,17 @@
     {
       "id": "4",
       "content": "oie",
-      "important": false
+      "important": true
     },
     {
       "id": "5",
       "content": "oie2",
-      "important": false
+      "important": true
     },
     {
       "id": "6",
       "content": "tchau",
-      "important": false
+      "important": true
     },
     {
       "id": "7",
@@ -38,17 +38,27 @@
     {
       "id": "8",
       "content": "opopo",
-      "important": false
+      "important": true
     },
     {
       "id": "9",
       "content": "dsadasd",
-      "important": true
+      "important": false
     },
     {
       "id": "e346",
       "content": "dasdasd",
+      "important": true
+    },
+    {
+      "id": "e627",
+      "content": "casinha",
       "important": false
+    },
+    {
+      "id": "ee3b",
+      "content": "dasdas",
+      "important": true
     }
   ]
 }
