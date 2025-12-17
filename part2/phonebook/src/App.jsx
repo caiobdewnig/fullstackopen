@@ -13,36 +13,55 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const personObject = {
-      name: newName,
-      number: newNumber,
-      id: String(persons.length + 1)
-    }
-    
-    if (persons.find(person => person.name === newName || person.number === newNumber)) {
-      alert(`${newName} or ${newNumber} is already in the phonebook!`)
+    const existingPerson = persons.find(p => p.name.toLowerCase() === newName.toLowerCase());
+
+    if (existingPerson) {
+      updatePersonOf(existingPerson.id, existingPerson.name);
     } else {
+      const personObject = {
+        name: newName,
+        number: newNumber,
+      };
+
       httpService.create(personObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
+        setPersons(persons.concat(returnedPerson));
+        setNewName('');
+        setNewNumber('');
+      });
     }
-  }
+  };
 
   const deletePersonOf = (id, name) => {
-    if (window.confirm(`Delete ${name}?`)) {
+    if (window.confirm(`Do you want to delete ${name}?`)) {
       httpService
         .deletePerson(id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== id))
         })
         .catch(error => {
-          alert(`The person '${name}' was already deleted from server, error: ${error}`)
+          alert(`The person '${name}' was already deleted from server, error: ${error.message}`)
           setPersons(persons.filter(p => p.id !== id))
         })
     }
   }
+
+  const updatePersonOf = (id, name) => {
+  if (window.confirm(`${name} is already in the phonebook, replace the old number with a new one?`)) {
+    const updatedPerson = { name, number: newNumber };
+
+    httpService
+      .updateNumber(id, updatedPerson)
+      .then((returnedPerson) => {
+        setPersons(persons.map(p => p.id !== id ? p : returnedPerson));
+        setNewName('');
+        setNewNumber('');
+      })
+      .catch(error => {
+        alert(`Error: ${name} was probably already deleted from the server (${error.message})`);
+        setPersons(persons.filter(p => p.id !== id));
+      });
+  }
+};
 
   const handleSearchChange = (event) => {
     setSearchName(event.target.value)
@@ -83,6 +102,7 @@ const App = () => {
         handlePersonChange={handlePersonChange}
         newNumber={newNumber}
         handleNumberChange={handleNumberChange}
+        handleUpdatePerson={updatePersonOf}
       />
 
       <h2>Numbers</h2>
