@@ -50,7 +50,9 @@ function App() {
     <>
       <h1>Data From Countries</h1>
       <label>Search: 
-        <input onChange={(event) => setSearch(event.target.value)} value={search}/>
+        <input onChange={(event) => {
+          setTimeout(setSearch(event.target.value), 40000)
+          console.log(event.target.value)}} value={search}/>
       </label>
       {content}
     </>
