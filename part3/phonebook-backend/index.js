@@ -40,7 +40,21 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id
-    response.json(list.find(person => person.id === id))
+    const person = list.find(person => person.id === id)
+    
+    person ? response.json(person) : response.status(404).end()
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = request.params.id;
+    const person = list.find(person => person.id === id);
+
+    if (person) {
+        list = list.filter(person => person.id !== id);
+        response.status(204).end();
+    } else {
+        response.status(404).end();
+    }
 })
 
 
