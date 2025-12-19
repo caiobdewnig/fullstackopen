@@ -59,12 +59,31 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
     const body = request.body;
-    const generateRandomId = () => `${Math.random()}${String(Math.random()).split('.')[1]}`
+    const generateRandomId = () => `${String(Math.random()).replace('.','-')}${String(Math.random()).replace('.','-')}${String(Math.random()).replace('.','-')}`;
 
     const newPerson = {
         id: generateRandomId(),
-        name: typeof body.name === 'string' ?  body.name : response.status(404).end(),
-        number: typeof body.number === 'string' ? body.number : response.status(404).end()
+        name:  body.name,
+        number: body.number
+    };
+
+    if (!body.name) {
+        response.status(404)
+        return response.json({error: "missing name"})
+    } else if (typeof body.name !== 'string') {
+        response.status(404)
+        return response.json({error: "name must be a string"})
+    } else if (list.find(person => person.name === body.name)) {
+        response.status(404)
+        return response.json({error: "person already exists in the db"})
+    } 
+
+    if (!body.number) {
+        response.status(404)
+        return response.json({error: "missing number"})
+    } else if (typeof body.number !== 'string') {
+        response.status(404)
+        return response.json({error: "number must be a string"})
     }
 
     list = list.concat(newPerson);

@@ -1,1 +1,8 @@
-GET http://localhost:3001/api/persons/2
+POST  http://localhost:3001/api/persons/
+Content-Type: application/json
+
+{
+    "id": "11112d1",
+    "name": "baob",
+    "number": "samba45645s6"
+}
