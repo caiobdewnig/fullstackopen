@@ -38,6 +38,11 @@ app.get('/info', (request, response) => {
         `)
 })
 
+app.get('/api/persons/:id', (request, response) => {
+    const id = request.params.id
+    response.json(list.find(person => person.id === id))
+})
+
 
 const PORT = 3001
 app.listen(PORT)
