@@ -31,6 +31,13 @@ app.get('/api/persons', (request, response) => {
     response.json(list)
 })
 
+app.get('/info', (request, response) => {
+    response.send(`
+        <p>Phonebook has info about ${list.length > 1 ? list.length + " peoples" : list.length + " people"}.</p>
+        <p>${new Date().toLocaleString('pt-BR')} (Brazilian Standart Time).</p>
+        `)
+})
+
 
 const PORT = 3001
 app.listen(PORT)
