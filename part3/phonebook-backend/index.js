@@ -57,6 +57,21 @@ app.delete('/api/persons/:id', (request, response) => {
     }
 })
 
+app.post('/api/persons', (request, response) => {
+    const body = request.body;
+    const generateRandomId = () => `${Math.random()}${String(Math.random()).split('.')[1]}`
+
+    const newPerson = {
+        id: generateRandomId(),
+        name: typeof body.name === 'string' ?  body.name : response.status(404).end(),
+        number: typeof body.number === 'string' ? body.number : response.status(404).end()
+    }
+
+    list = list.concat(newPerson);
+
+    response.json(list)
+})
+
 
 const PORT = 3001
 app.listen(PORT)
