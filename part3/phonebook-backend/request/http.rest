@@ -2,7 +2,7 @@ POST  http://localhost:3001/api/persons/
 Content-Type: application/json
 
 {
-    "id": "11112d1",
-    "name": "baob",
+    "id": "11112dasd1",
+    "name": "laérdasdascio",
     "number": "samba45645s6"
 }
